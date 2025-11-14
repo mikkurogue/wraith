@@ -63,49 +63,6 @@ export namespace Wraith {
 	}
 
 	/**
-	 * Diagnostic helper types to produce clearer compile-time messages.
-	 */
-	export type OpaqueError<V, T, Brand extends string> = V extends Opaque<
-		T,
-		Brand
-	>
-		? V
-		: [
-				"Type Error: Expected value branded as",
-				Brand,
-				"but received unbranded value with shape",
-				V,
-			];
-
-	export type RequireOpaque<V, T, Brand extends string> = OpaqueError<
-		V,
-		T,
-		Brand
-	>;
-
-	/**
-	 * Asserts at type-level that a value is an opaque of given Brand. Use in a dummy variable.
-	 * Example: const _userCheck: Wraith.RequireOpaque<typeof user, CoreEntity, 'User'> = user;
-	 */
-	export function assertOpaque<T, Brand extends string>(
-		value: Opaque<T, Brand>,
-	) {
-		return value;
-	}
-
-	/**
-	 * Runtime no-op; narrows type if already opaque, otherwise triggers a helpful type error when assigned.
-	 */
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	/** @internal */
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	export function ensureOpaque<T, Brand extends string>(
-		_value: unknown,
-	): _value is Opaque<T, Brand> {
-		return true;
-	}
-
-	/**
 	 * Builder convenience: transform underlying raw value while keeping brand.
 	 */
 	export function map<T, Brand extends string>(
